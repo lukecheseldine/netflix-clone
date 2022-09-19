@@ -1,7 +1,17 @@
-import React from 'react'
+import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Netflix from "./pages/Netflix";
+import Signup from "./pages/Signup";
+import Login from "./pages/Login";
 
 export default function App() {
   return (
-    <div>App</div>
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route exact path="/login" element={<Login />} />
+        <Route exact path="/signup" element={<Signup />} />
+        <Route exact path="/" element={<Netflix />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
