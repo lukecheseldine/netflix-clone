@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import logo from "../assets/logo.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { FaSearch, FaPowerOff } from "react-icons/fa";
-import { signOut } from "firebase/auth";
+import { signOut, onAuthStateChanged } from "firebase/auth";
 import { firebaseAuth } from "../utils/firebase-config";
 
 export default function Navbar({ isScrolled }) {
@@ -26,6 +26,12 @@ export default function Navbar({ isScrolled }) {
       link: "/mylist",
     },
   ];
+
+  const navigate = useNavigate();
+
+  onAuthStateChanged(firebaseAuth, (currentUser) => {
+    if (!currentUser) navigate("/login");
+  });
 
   const [showSearch, setShowSearch] = useState(false);
   const [inputHover, setInputHover] = useState(false);
@@ -67,10 +73,10 @@ export default function Navbar({ isScrolled }) {
                 setInputHover(false);
               }}
             />
-            <button onClick={() => signOut(firebaseAuth)}>
-              <FaPowerOff />
-            </button>
           </div>
+          <button onClick={() => signOut(firebaseAuth)}>
+            <FaPowerOff />
+          </button>
         </div>
       </nav>
     </Container>
@@ -115,6 +121,51 @@ const Container = styled.div`
     gap: 1rem;
     button {
       background-color: transparent;
+      border: none;
+      cursor: pointer;
+      &:focus {
+        outline: none;
+      }
+      svg {
+        color: #f34242;
+        font-size: 1.2rem;
+      }
+    }
+    .search {
+      display: flex;
+      gap: 0.4rem;
+      align-items: center;
+      justify-content: center;
+      padding: 0.2rem;
+      padding-left: 0.5rem;
+      button {
+        background-color: transparent;
+        svg {
+          color: white;
+        }
+      }
+      input {
+        width: 0;
+        opacity: 0;
+        visibility: hidden;
+        transition: 0.3s ease-in-out;
+        background-color: transparent;
+        border: none;
+        color: white;
+        &:focus {
+          outline: none;
+        }
+      }
+    }
+    .show-search {
+      border: 1px solid white;
+      background-color: rgba(0, 0, 0, 0.6);
+      input {
+        width: 100%;
+        opacity: 1;
+        visibility: visible;
+        padding: 0.3rem;
+      }
     }
   }
 `;
