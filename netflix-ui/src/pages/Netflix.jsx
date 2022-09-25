@@ -13,7 +13,7 @@ import Slider from "../components/Slider";
 export default function Netflix() {
   const [isScrolled, setIsScrolled] = useState(false);
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const genresLoaded = useSelector((state) => state.netflix.genresLoaded);
   const movies = useSelector((state) => state.netflix.movies);
 
@@ -30,7 +30,6 @@ export default function Netflix() {
     return () => (window.onscroll = null);
   };
 
-  const navigate = useNavigate();
   return (
     <Container>
       <Navbar isScrolled={isScrolled} />
